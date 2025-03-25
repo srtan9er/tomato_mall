@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 添加动画相关样式 */
+.gsap-reveal {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.smooth-transition {
+  transition: all 0.3s ease;
+}
