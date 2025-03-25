@@ -6,7 +6,7 @@ const router = useRouter()
 const userInfo = ref({
   username: '',
   email: '',
-  avatar: 'https://via.placeholder.com/150'
+  avatar: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
 })
 
 onMounted(() => {
@@ -21,8 +21,8 @@ onMounted(() => {
   // 获取用户信息
   userInfo.value = {
     username: username || '测试用户',
-    email: 'stranger@example.com',
-    avatar: 'https://via.placeholder.com/150'
+    email: 'srtanger@example.com',
+    avatar: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
   }
 })
 

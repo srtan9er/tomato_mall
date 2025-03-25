@@ -9,7 +9,7 @@ const errorMessage = ref('')
 
 const handleLogin = () => {
   // 临时验证逻辑
-  if (username.value === 'stranger' && password.value === '123456') {
+  if (username.value === 'srtanger' && password.value === '123456') {
     localStorage.setItem('token', 'demo-token')
     localStorage.setItem('username', username.value)
     router.push('/auth/profile')
