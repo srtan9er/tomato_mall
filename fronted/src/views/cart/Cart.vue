@@ -17,6 +17,7 @@ const updateQuantity = (item, change) => {
   }
 }
 
+
 const total = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
 })
