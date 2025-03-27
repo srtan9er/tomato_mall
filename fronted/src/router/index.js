@@ -49,17 +49,19 @@ const router = createRouter({
         }
       ]
     },
-    // 交易模块
+    // 购物车模块（独立）
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: () => import('../views/cart/Cart.vue'),
+      meta: { requiresAuth: true }
+    },
+    // 订单模块
     {
       path: '/order',
       name: 'Order',
       meta: { requiresAuth: true },
       children: [
-        {
-          path: 'cart',
-          name: 'Cart',
-          component: () => import('../views/order/Cart.vue')
-        },
         {
           path: 'checkout',
           name: 'Checkout',
@@ -72,11 +74,23 @@ const router = createRouter({
         }
       ]
     },
-    // 广告模块
+    // 商城模块
     {
-      path: '/ads',
-      name: 'Ads',
-      component: () => import('../views/ads/AdsList.vue')
+      path: '/mall',
+      name: 'Mall',
+      component: () => import('../views/mall/MallHome.vue'),
+      children: [
+        {
+          path: '',
+          name: 'MallHome',
+          component: () => import('../views/mall/MallList.vue')
+        },
+        {
+          path: 'store/:id',
+          name: 'MallStoreDetail',
+          component: () => import('../views/mall/StoreDetail.vue')
+        }
+      ]
     }
   ]
 })

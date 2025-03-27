@@ -1,6 +1,13 @@
 <script setup>
 import { onMounted } from 'vue'
 import gsap from 'gsap'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goToMall = () => {
+  router.push('/mall')
+}
 
 onMounted(() => {
   gsap.from('.welcome-text', {
@@ -25,6 +32,9 @@ onMounted(() => {
         <p>定期优惠活动，超值购物体验</p>
       </div>
     </div>
+    <button class="mall-button" @click="goToMall">
+      浏览商城
+    </button>
   </div>
 </template>
 
@@ -50,5 +60,21 @@ onMounted(() => {
   padding: 20px;
   border-radius: 8px;
   width: 250px;
+}
+
+.mall-button {
+  margin-top: 30px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #42b983;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.mall-button:hover {
+  background-color: #3aa876;
 }
 </style>

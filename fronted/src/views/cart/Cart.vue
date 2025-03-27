@@ -1,10 +1,21 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const cartItems = ref([
   { id: 1, title: '三体', price: 99, quantity: 1 },
   { id: 2, title: '活着', price: 39, quantity: 1 },
 ])
+
+const removeItem = (id) => {
+  cartItems.value = cartItems.value.filter(item => item.id !== id)
+}
+
+const updateQuantity = (item, change) => {
+  item.quantity += change
+  if (item.quantity <= 0) {
+    removeItem(item.id)
+  }
+}
 
 const total = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -19,9 +30,10 @@ const total = computed(() => {
         <span>{{ item.title }}</span>
         <span>¥{{ item.price }}</span>
         <div class="quantity">
-          <button @click="item.quantity--" :disabled="item.quantity <= 1">-</button>
+          <button @click="updateQuantity(item, -1)" :disabled="item.quantity <= 0">-</button>
           <span>{{ item.quantity }}</span>
-          <button @click="item.quantity++">+</button>
+          <button @click="updateQuantity(item, 1)">+</button>
+          <button class="delete-btn" @click="removeItem(item.id)">删除</button>
         </div>
       </div>
     </div>
@@ -66,5 +78,19 @@ const total = computed(() => {
   text-decoration: none;
   border-radius: 4px;
   margin-left: 20px;
+}
+
+.delete-btn {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background: #ff4949;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #f56c6c;
 }
 </style>
