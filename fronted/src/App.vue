@@ -6,7 +6,7 @@
     <!-- 导航栏 -->
     <router-link to="/">首页</router-link> |
     <router-link to="/books">书籍</router-link> |
-    <router-link to="/mall">商城</router-link> |  <!-- 添加这一行 -->
+    <router-link to="/mall">商城</router-link> | 
     <router-link to="/cart">购物车</router-link> |
     <router-link to="/auth/profile">个人中心</router-link>
   </nav>

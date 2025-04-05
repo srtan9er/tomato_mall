@@ -36,12 +36,14 @@ const goToDetail = () => {
   border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background-color 0.2s;
+  background-color: white;
 }
 
 .book-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
 }
 
 .book-cover {

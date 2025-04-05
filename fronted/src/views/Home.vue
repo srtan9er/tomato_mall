@@ -1,19 +1,29 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
+import TomatoSplitAnimation from '../components/TomatoSplitAnimation.vue'
 
 const router = useRouter()
+const contentRef = ref(null)
 
 const goToMall = () => {
   router.push('/mall')
 }
 
 onMounted(() => {
-  gsap.from('.welcome-text', {
-    y: -50,
+  // 初始隐藏内容
+  gsap.set(contentRef.value, {
     opacity: 0,
-    duration: 1,
+    y: 50
+  })
+
+  // 2秒后开始显示内容（与番茄动画同步）
+  gsap.to(contentRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 1.5,
+    delay: 1.0,
     ease: 'power2.out'
   })
 })
@@ -21,20 +31,23 @@ onMounted(() => {
 
 <template>
   <div class="home">
-    <h1 class="welcome-text">欢迎来到番茄商城</h1>
-    <div class="features">
-      <div class="feature-card">
-        <h3>海量图书</h3>
-        <p>丰富的图书资源，满足您的阅读需求</p>
+    <TomatoSplitAnimation />
+    <div ref="contentRef" class="content">
+      <h1 class="welcome-text">欢迎来到番茄商城</h1>
+      <div class="features">
+        <div class="feature-card">
+          <h3>海量图书</h3>
+          <p>丰富的图书资源，满足您的阅读需求</p>
+        </div>
+        <div class="feature-card">
+          <h3>优惠活动</h3>
+          <p>定期优惠活动，超值购物体验</p>
+        </div>
       </div>
-      <div class="feature-card">
-        <h3>优惠活动</h3>
-        <p>定期优惠活动，超值购物体验</p>
-      </div>
+      <button class="mall-button" @click="goToMall">
+        浏览商城
+      </button>
     </div>
-    <button class="mall-button" @click="goToMall">
-      浏览商城
-    </button>
   </div>
 </template>
 
@@ -42,6 +55,19 @@ onMounted(() => {
 .home {
   padding: 20px;
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  z-index: 2;
 }
 
 .welcome-text {

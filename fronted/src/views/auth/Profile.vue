@@ -8,6 +8,11 @@ const userInfo = ref({
   email: '',
   avatar: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
 })
+const showEditDialog = ref(false)
+const editForm = ref({
+  username: '',
+  email: ''
+})
 
 onMounted(() => {
   // 检查登录状态
@@ -30,6 +35,23 @@ const handleLogout = () => {
   localStorage.removeItem('token')
   router.push('/auth/login')
 }
+
+const openEditDialog = () => {
+  editForm.value = {
+    username: userInfo.value.username,
+    email: userInfo.value.email
+  }
+  showEditDialog.value = true
+}
+
+const handleSave = () => {
+  // 这里添加保存逻辑，实际项目中应该调用API
+  userInfo.value = {
+    ...userInfo.value,
+    ...editForm.value
+  }
+  showEditDialog.value = false
+}
 </script>
 
 <template>
@@ -44,8 +66,27 @@ const handleLogout = () => {
         <span>{{ userInfo.email }}</span>
       </div>
       <div class="actions">
-        <button class="edit-btn">编辑资料</button>
+        <button class="edit-btn" @click="openEditDialog">编辑资料</button>
         <button class="logout-btn" @click="handleLogout">退出登录</button>
+      </div>
+
+      <!-- 编辑资料弹窗 -->
+      <div v-if="showEditDialog" class="edit-dialog">
+        <div class="dialog-content">
+          <h3>编辑个人资料</h3>
+          <div class="form-item">
+            <label>用户名：</label>
+            <input v-model="editForm.username" type="text">
+          </div>
+          <div class="form-item">
+            <label>邮箱：</label>
+            <input v-model="editForm.email" type="email">
+          </div>
+          <div class="dialog-actions">
+            <button class="cancel-btn" @click="showEditDialog = false">取消</button>
+            <button class="save-btn" @click="handleSave">保存</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -111,6 +152,70 @@ const handleLogout = () => {
 }
 
 .edit-btn:hover, .logout-btn:hover {
+  opacity: 0.9;
+}
+
+.edit-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.form-item {
+  margin: 15px 0;
+}
+
+.form-item label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.form-item input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.dialog-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn, .save-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #ddd;
+}
+
+.save-btn {
+  background: #42b983;
+  color: white;
+}
+
+.cancel-btn:hover, .save-btn:hover {
   opacity: 0.9;
 }
 </style>

@@ -77,20 +77,13 @@ const router = createRouter({
     // 商城模块
     {
       path: '/mall',
-      name: 'Mall',
-      component: () => import('../views/mall/MallHome.vue'),
-      children: [
-        {
-          path: '',
-          name: 'MallHome',
-          component: () => import('../views/mall/MallList.vue')
-        },
-        {
-          path: 'store/:id',
-          name: 'MallStoreDetail',
-          component: () => import('../views/mall/StoreDetail.vue')
-        }
-      ]
+      name: 'MallList',
+      component: () => import('../views/mall/MallList.vue')
+    },
+    {
+      path: '/mall/store/:id',
+      name: 'StoreDetail',
+      component: () => import('../views/mall/StoreDetail.vue')
     }
   ]
 })

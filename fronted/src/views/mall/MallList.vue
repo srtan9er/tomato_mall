@@ -44,6 +44,15 @@ onMounted(async () => {
         { id: 1, title: '深入理解计算机系统', price: 89, cover: '/images/book1.jpg' },
         { id: 2, title: '算法导论', price: 78, cover: '/images/book2.jpg' },
       ]
+    },
+    {
+      id: 2,
+      name: '优质图书店',
+      description: '专注优质图书销售',
+      books: [
+        { id: 1, title: '深入理解计算机系统', price: 89, cover: '/images/book1.jpg' },
+        { id: 2, title: '算法导论', price: 78, cover: '/images/book2.jpg' },
+      ]
     }
   ]
 })
@@ -56,11 +65,28 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
+.mall-list h1 {
+  margin-bottom: 40px;
+  margin-top: 30px;
+}
+
+.store-list {
+  margin-top: 30px;  /* 增加商店列表上方间距 */
+}
+
 .store-card {
+  background-color: white;
   border: 1px solid #eee;
   margin-bottom: 30px;
   padding: 20px;
   border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.store-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .store-header {
