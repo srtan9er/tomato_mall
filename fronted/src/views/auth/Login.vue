@@ -1,30 +1,65 @@
 <script setup>
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import { useRouter } from 'vue-router'
+import {userInfo, userLogin} from "../../api/user.js";
+import {ElMessage} from "element-plus";
 
 const router = useRouter()
-const username = ref('')
+const tel = ref('')
 const password = ref('')
 const errorMessage = ref('')
 
-const handleLogin = () => {
-  // 临时验证逻辑
-  if (username.value === 'srtanger' && password.value === '123456') {
-    localStorage.setItem('token', 'demo-token')
-    localStorage.setItem('username', username.value)
-    router.push('/auth/profile')
-  } else {
-    errorMessage.value = '用户名或密码错误'
-  }
+// 电话号码是否为空
+const hasTelInput = computed(() => tel.value !== '')
+// 密码是否为空
+const hasPasswordInput = computed(() => password.value !== '')
+// 电话号码的规则
+const chinaMobileRegex = /^1(3[0-9]|4[579]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[1289])\d{8}$/
+const telLegal = computed(() => chinaMobileRegex.test(tel.value))
+// 密码不设置特殊规则
+// 登录按钮可用性
+const loginDisabled = computed(() => {
+  return !(hasTelInput.value && telLegal.value && hasPasswordInput.value)
+})
+
+function handleLogin() {
+  userLogin({
+    phone: tel.value,
+    password: password.value
+  }).then(res => {
+    console.log(res)
+    if (res.data.code === '000') {
+      ElMessage({
+        message: "登录成功！",
+        type: 'success',
+        center: true,
+      })
+      const token = res.data.result
+      sessionStorage.setItem('token', token)
+
+      userInfo().then(res => {
+        sessionStorage.setItem('name', res.data.result.name)
+        sessionStorage.setItem('role', res.data.result.role)
+        router.push({path: "/Register"})
+      })
+    } else if (res.data.code === '400') {
+      ElMessage({
+        message: res.data.msg,
+        type: 'error',
+        center: true,
+      })
+      password.value = ''
+    }
+  })
 }
 </script>
 
 <template>
   <div class="login-container">
     <h2>用户登录</h2>
-    <form @submit.prevent="handleLogin">
+    <el-form>
       <div class="form-group">
-        <input v-model="username" type="text" placeholder="用户名">
+        <input v-model="tel" type="text" placeholder="手机号">
       </div>
       <div class="form-group">
         <input v-model="password" type="password" placeholder="密码">
@@ -32,11 +67,13 @@ const handleLogin = () => {
       <div v-if="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
-      <button type="submit">登录</button>
+      <el-button @click.prevent="handleLogin" :disabled="loginDisabled" type="primary">
+        登录
+      </el-button>
       <div class="register-link">
         还没有账号？<router-link to="/auth/register">立即注册</router-link>
       </div>
-    </form>
+    </el-form>
   </div>
 </template>
 

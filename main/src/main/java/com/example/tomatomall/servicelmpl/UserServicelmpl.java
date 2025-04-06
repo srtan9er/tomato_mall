@@ -46,14 +46,9 @@ public class UserServicelmpl implements UserService {
     @Override
     public String login(String phone, String password) {
         User user = userRepository.findByPhone(phone);
-
-
-
         if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             throw TomatoException.phoneOrPasswordError();
         }
-
-
         return tokenUtil.getToken(user);
     }
 
