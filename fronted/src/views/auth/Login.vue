@@ -37,14 +37,14 @@ function handleLogin() {
         center: true,
       })
       const token = res.data.result
-      sessionStorage.setItem('token', token)
+      localStorage.setItem('token', token)
       userInfo().then(res => {
         console.log(res)
         console.log(res.data.result)
-        sessionStorage.setItem('name', res.data.result.name)
-        sessionStorage.setItem('role', res.data.result.role)
+        localStorage.setItem('name', res.data.result.name)
+        localStorage.setItem('role', res.data.result.role)
 
-        router.push({path: "/auth/Profile"})
+        router.push({path: "/auth/profile"})
       })
     } else if (res.data.code === '400') {
       ElMessage({

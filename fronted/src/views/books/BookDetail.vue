@@ -1,20 +1,23 @@
 <template>
   <div class="book-detail">
-    <div class="book-container" v-if="book">
-      <div class="book-image">
-        <img :src="book.cover" :alt="book.title" />
-      </div>
-      <div class="book-info">
-        <h1>{{ book.title }}</h1>
-        <p class="price">¥{{ book.price }}</p>
-        <p class="description">{{ book.description }}</p>
-        <div class="store-info">
-          <h3>商家信息</h3>
-          <p>{{ book.store?.name }}</p>
+    <div class="detail-card">
+      <div class="book-container" v-if="book">
+        <div class="book-image">
+          <img :src="book.cover" :alt="book.title" />
         </div>
-        <div class="actions">
-          <button class="add-to-cart" @click="addToCart">加入购物车</button>
-          <button class="buy-now" @click="buyNow">立即购买</button>
+        <div class="book-info">
+          <h1>{{ book.title }}</h1>
+          <p class="price">¥{{ book.price }}</p>
+          <p class="description">{{ book.description }}</p>
+          <div class="store-info" @click="goToStore">
+            <h3>商家信息</h3>
+            <p>{{ book.store?.name }}</p>
+            <span class="store-link">查看店铺 ></span>
+          </div>
+          <div class="actions">
+            <button class="add-to-cart" @click="addToCart">加入购物车</button>
+            <button class="buy-now" @click="buyNow">立即购买</button>
+          </div>
         </div>
       </div>
     </div>
@@ -36,8 +39,8 @@ onMounted(async () => {
     id: route.params.id,
     title: '深入理解计算机系统',
     price: 89.00,
-    description: '本书从程序员的视角详细阐述计算机系统的本质概念，并展示这些概念如何实实在在地影响应用程序的正确性、性能和实用性。',
-    cover: '/images/book1.jpg',
+    description: '本书从程序员的视角详细阐述计算机系统的本质概念，并展示这些概念如何actually影响应用程序的正确性、性能和实用性。',
+    cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',
     store: {
       id: 1,
       name: '优质图书店'
@@ -52,6 +55,12 @@ const addToCart = () => {
 const buyNow = () => {
   router.push('/order/checkout')
 }
+
+const goToStore = () => {
+  if (book.value?.store?.id) {
+    router.push(`/mall/store/${book.value.store.id}`)
+  }
+}
 </script>
 
 <style scoped>
@@ -59,6 +68,38 @@ const buyNow = () => {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.detail-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.store-info {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(248, 249, 250, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.store-info:hover {
+  background: rgba(248, 249, 250, 0.3);
+  transform: translateY(-2px);
+}
+
+.store-link {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  color: #8B0000;
+  font-size: 14px;
 }
 
 .book-container {
@@ -72,8 +113,17 @@ const buyNow = () => {
 
 .book-image img {
   width: 100%;
-  height: auto;
+  height: 500px;
+  object-fit: cover;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 6px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.book-image img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .book-info {
@@ -82,7 +132,7 @@ const buyNow = () => {
 
 .price {
   font-size: 24px;
-  color: #f56c6c;
+  color: #5c1440;
   margin: 20px 0;
 }
 
@@ -90,13 +140,6 @@ const buyNow = () => {
   line-height: 1.6;
   color: #666;
   margin-bottom: 20px;
-}
-
-.store-info {
-  margin: 20px 0;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
 }
 
 .actions {
@@ -114,13 +157,13 @@ button {
 }
 
 .add-to-cart {
-  background: #fff;
-  border: 1px solid #409eff;
-  color: #409eff;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #8B0000;
+  color: #8B0000;
 }
 
 .buy-now {
-  background: #409eff;
+  background: #8B0000;
   color: white;
 }
 

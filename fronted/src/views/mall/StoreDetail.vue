@@ -2,12 +2,15 @@
   <div class="store-detail">
     <div class="store-header">
       <div class="store-info">
-        <h1>{{ store.name }}</h1>
-        <div class="store-stats">
-          <span>商品数量: {{ store.bookCount }}</span>
-          <span>店铺评分: {{ store.rating }}</span>
+        <img :src="store.logo" :alt="store.name" class="store-logo">
+        <div class="store-text">
+          <h1>{{ store.name }}</h1>
+          <div class="store-stats">
+            <span>商品数量: {{ store.bookCount }}</span>
+            <span>店铺评分: {{ store.rating }}</span>
+          </div>
+          <p class="store-description">{{ store.description }}</p>
         </div>
-        <p class="store-description">{{ store.description }}</p>
       </div>
     </div>
 
@@ -43,6 +46,7 @@ onMounted(async () => {
     description: '专注优质图书销售，提供最好的阅读体验',
     bookCount: 100,
     rating: 4.8,
+    logo: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',
     books: [
       {
         id: 1,
@@ -70,15 +74,31 @@ onMounted(async () => {
 }
 
 .store-header {
-  background: #f8f9fa;
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px);
   padding: 30px;
   border-radius: 8px;
   margin-bottom: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
-.store-info h1 {
-  margin: 0 0 15px 0;
-  color: #2c3e50;
+.store-info {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.store-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.store-text {
+  flex: 1;
 }
 
 .store-stats {
@@ -89,6 +109,9 @@ onMounted(async () => {
 
 .store-stats span {
   color: #666;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 4px 12px;
+  border-radius: 15px;
 }
 
 .store-description {

@@ -1,12 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { userInfo as fetchUserInfo } from '../../api/user'  // 重命名为 fetchUserInfo
 
 const router = useRouter()
 const userInfo = ref({
   username: '',
   email: '',
-  avatar: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
+  avatar: ''
 })
 const showEditDialog = ref(false)
 const editForm = ref({
@@ -14,20 +15,27 @@ const editForm = ref({
   email: ''
 })
 
-onMounted(() => {
+onMounted(async () => {
   // 检查登录状态
   const token = localStorage.getItem('token')
-  const username = localStorage.getItem('username')
   if (!token) {
     router.push('/auth/login')
     return
   }
-  
-  // 获取用户信息
-  userInfo.value = {
-    username: username || '测试用户',
-    email: 'srtanger@example.com',
-    avatar: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
+
+  try {
+    // 调用 userInfo 函数获取用户信息
+    const response = await fetchUserInfo()  // 使用重命名后的函数
+    const userData = response.data.result
+    
+    // 更新用户信息
+    userInfo.value = {
+      username: userData.name || '未设置用户名',
+      email: userData.email || '未设置邮箱',
+      avatar: userData.avatar || 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
+    }
+  } catch (error) {
+    console.error('获取用户信息失败:', error)
   }
 })
 

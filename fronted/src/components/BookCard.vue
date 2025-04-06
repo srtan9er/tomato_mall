@@ -33,22 +33,22 @@ const goToDetail = () => {
 
 <style scoped>
 .book-card {
-  border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s, background-color 0.2s;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
 }
 
 .book-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 0.45);
 }
 
 .book-cover {
   width: 100%;
-  height: 200px;
+  height: 150px;
   object-fit: cover;
 }
 

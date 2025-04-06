@@ -5,8 +5,11 @@
       <div v-for="store in stores" :key="store.id" class="store-card">
         <div class="store-header">
           <div class="store-info">
-            <h2>{{ store.name }}</h2>
-            <p>{{ store.description }}</p>
+            <img :src="store.logo" :alt="store.name" class="store-logo">
+            <div class="store-text">
+              <h2>{{ store.name }}</h2>
+              <p>{{ store.description }}</p>
+            </div>
           </div>
           <button class="store-detail-btn" @click="router.push(`/mall/store/${store.id}`)">
             查看店铺详情
@@ -40,18 +43,20 @@ onMounted(async () => {
       id: 1,
       name: '优质图书店',
       description: '专注优质图书销售',
+      logo: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',  // 添加店铺logo
       books: [
-        { id: 1, title: '深入理解计算机系统', price: 89, cover: '/images/book1.jpg' },
-        { id: 2, title: '算法导论', price: 78, cover: '/images/book2.jpg' },
+        { id: 1, title: '深入理解计算机系统', price: 89, cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg' },
+        { id: 2, title: '算法导论', price: 78, cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg' },
       ]
     },
     {
       id: 2,
       name: '优质图书店',
       description: '专注优质图书销售',
+      logo: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',  // 添加店铺logo
       books: [
-        { id: 1, title: '深入理解计算机系统', price: 89, cover: '/images/book1.jpg' },
-        { id: 2, title: '算法导论', price: 78, cover: '/images/book2.jpg' },
+        { id: 1, title: '深入理解计算机系统', price: 89, cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg' },
+        { id: 2, title: '算法导论', price: 78, cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg' },
       ]
     }
   ]
@@ -75,18 +80,19 @@ onMounted(async () => {
 }
 
 .store-card {
-  background-color: white;
-  border: 1px solid #eee;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
   margin-bottom: 30px;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .store-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 0.45);
 }
 
 .store-header {
@@ -124,5 +130,24 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
+}
+
+.store-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.store-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.store-text {
+  display: flex;
+  flex-direction: column;
 }
 </style>

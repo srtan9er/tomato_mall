@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
-import TomatoSplitAnimation from '../components/TomatoSplitAnimation.vue'
+import TomatoSplitAnimation from '../components/tomatosplitanimation.vue'
 
 const router = useRouter()
 const contentRef = ref(null)
@@ -22,7 +22,7 @@ onMounted(() => {
   gsap.to(contentRef.value, {
     opacity: 1,
     y: 0,
-    duration: 1.5,
+    duration: 1.0,
     delay: 1.0,
     ease: 'power2.out'
   })
@@ -92,8 +92,8 @@ onMounted(() => {
   margin-top: 30px;
   padding: 12px 24px;
   font-size: 16px;
-  background-color: #42b983;
-  color: black;
+  background-color: #8B0000;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -101,6 +101,7 @@ onMounted(() => {
 }
 
 .mall-button:hover {
-  background-color: #3aa876;
+  background-color: #AB2222;
 }
+
 </style>
