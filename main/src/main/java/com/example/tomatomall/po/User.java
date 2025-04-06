@@ -22,6 +22,10 @@ public class User {
     private Integer id;
 
     @Basic
+    @Column(name = "username")
+    private String username;
+
+    @Basic
     @Column(name = "name")
     private String name;
 
@@ -50,6 +54,14 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
+
+    @Basic
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Basic
+    @Column(name = "email")
+    private String email;
 
     public UserVO toVO(){
         UserVO userVO=new UserVO();

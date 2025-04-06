@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 @Service
 public class UserServicelmpl implements UserService {
 
@@ -24,6 +26,8 @@ public class UserServicelmpl implements UserService {
     @Autowired
     SecurityUtil securityUtil;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Boolean register(UserVO userVO) {
@@ -32,6 +36,8 @@ public class UserServicelmpl implements UserService {
             throw TomatoException.phoneAlreadyExists();
         }
         User newUser = userVO.toPO();
+        String encodedPassword = passwordEncoder.encode(userVO.getPassword());
+        newUser.setPassword(encodedPassword);
         newUser.setCreateTime(new Date());
         userRepository.save(newUser);
         return true;
@@ -39,10 +45,15 @@ public class UserServicelmpl implements UserService {
 
     @Override
     public String login(String phone, String password) {
-        User user = userRepository.findByPhoneAndPassword(phone, password);
-        if (user == null) {
+        User user = userRepository.findByPhone(phone);
+
+
+
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             throw TomatoException.phoneOrPasswordError();
         }
+
+
         return tokenUtil.getToken(user);
     }
 

@@ -29,6 +29,10 @@ public class UserVO {
 
     private Date createTime;
 
+    private String email;
+
+    private String avatar;
+
     public User toPO(){
         User user=new User();
         user.setId(this.id);
@@ -39,6 +43,8 @@ public class UserVO {
         user.setStoreId(this.storeId);
         user.setPassword(this.password);
         user.setCreateTime(this.createTime);
+        user.setEmail(this.email);
+        user.setAvatar(this.avatar);
         return user;
     }
 }
