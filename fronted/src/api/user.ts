@@ -9,10 +9,13 @@ type LoginInfo = {
 type RegisterInfo = {
     role: string,
     name: string,
-    phone: string,
+    phone: number,
     password: string,
-    address: string,
     storeId?: number,
+    address: string,
+    createTime: number,
+    email: string,
+    avatar: string,
 }
 
 type UpdateInfo = {
@@ -39,10 +42,23 @@ export const userRegister = (registerInfo: RegisterInfo) => {
         })
 }
 
+function parseJwt(token: string) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+        atob(base64)
+            .split('')
+            .map(c => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
+            .join('')
+    );
+    return JSON.parse(jsonPayload);
+}
 // 获取用户信息
 export const userInfo = () => {
-    return axios.get(`${USER_MODULE}`)
+    const token :string|null = sessionStorage.getItem('token');
+    return axios.get(`${USER_MODULE}/information`,{headers: {'token': token}})
         .then(res => {
+            //console.log(res.data.result);
             return res
         })
 }

@@ -9,6 +9,9 @@ const tel = ref('')
 const password = ref('')
 const errorMessage = ref('')
 
+const name = ref('')
+const role = ref('')
+
 // 电话号码是否为空
 const hasTelInput = computed(() => tel.value !== '')
 // 密码是否为空
@@ -27,7 +30,6 @@ function handleLogin() {
     phone: tel.value,
     password: password.value
   }).then(res => {
-    console.log(res)
     if (res.data.code === '000') {
       ElMessage({
         message: "登录成功！",
@@ -36,11 +38,13 @@ function handleLogin() {
       })
       const token = res.data.result
       sessionStorage.setItem('token', token)
-
       userInfo().then(res => {
+        console.log(res)
+        console.log(res.data.result)
         sessionStorage.setItem('name', res.data.result.name)
         sessionStorage.setItem('role', res.data.result.role)
-        router.push({path: "/Register"})
+
+        router.push({path: "/auth/Profile"})
       })
     } else if (res.data.code === '400') {
       ElMessage({

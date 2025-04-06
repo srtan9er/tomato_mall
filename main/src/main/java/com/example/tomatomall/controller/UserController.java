@@ -23,12 +23,12 @@ public class UserController {
         return ResultVO.buildSuccess(userService.login(phone, password));
     }
 
-    @GetMapping
+    @GetMapping("/information")
     public ResultVO<UserVO> getInformation(){
         return ResultVO.buildSuccess(userService.getInformation());
     }
 
-    @PostMapping
+    @PostMapping("/update")
     public ResultVO<Boolean> updateInformation(@RequestBody UserVO userVO){
         return ResultVO.buildSuccess(userService.updateInformation(userVO));
     }
