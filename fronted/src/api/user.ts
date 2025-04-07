@@ -35,6 +35,7 @@ export const userLogin = (loginInfo: LoginInfo) => {
 
 // 用户注册
 export const userRegister = (registerInfo: RegisterInfo) => {
+    console.log(registerInfo)
     return axios.post(`${USER_MODULE}/register`, registerInfo,
         {headers: {'Content-Type': 'application/json'}})
         .then(res => {
@@ -42,17 +43,6 @@ export const userRegister = (registerInfo: RegisterInfo) => {
         })
 }
 
-function parseJwt(token: string) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-        atob(base64)
-            .split('')
-            .map(c => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
-            .join('')
-    );
-    return JSON.parse(jsonPayload);
-}
 // 获取用户信息
 export const userInfo = () => {
     const token :string|null = sessionStorage.getItem('token');

@@ -69,7 +69,7 @@ const handleRegister = () => {
         <input v-model="confirmPassword" type="password" placeholder="确认密码">
       </div>
       <div class="form-group">
-        <input v-model="formData.email" type="email" placeholder="电子邮箱">
+        <input v-model="email" type="email" placeholder="电子邮箱">
       </div>
       <button type="submit">注册</button>
     </form>

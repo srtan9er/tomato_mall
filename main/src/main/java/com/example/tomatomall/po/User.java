@@ -23,11 +23,11 @@ public class User {
 
     @Basic
     @Column(name = "username")
-    private String username;
+    private String username;// 这是用户姓名
 
     @Basic
     @Column(name = "name")
-    private String name;
+    private String name;// 这是昵称
 
     @Basic
     @Column(name = "phone")
@@ -57,11 +57,11 @@ public class User {
 
     @Basic
     @Column(name = "avatar")
-    private String avatar;
+    private String avatar;//
 
     @Basic
     @Column(name = "email")
-    private String email;
+    private String email;//
 
     public UserVO toVO(){
         UserVO userVO=new UserVO();
@@ -73,6 +73,9 @@ public class User {
         userVO.setPhone(this.phone);
         userVO.setPassword(this.password);
         userVO.setCreateTime(this.createTime);
+        userVO.setAvatar(this.avatar);
+        userVO.setEmail(this.email);
+        userVO.setUsername(this.username);
         return userVO;
     }
 }

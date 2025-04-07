@@ -1,41 +1,53 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { userInfo as fetchUserInfo } from '../../api/user'  // 重命名为 fetchUserInfo
+import {parseTime} from "element-plus/es/components/time-select/src/utils";
+import {userInfo} from "../../api/user.js";
 
 const router = useRouter()
-const userInfo = ref({
-  username: '',
-  email: '',
-  avatar: ''
-})
+// const userInfo = ref({
+//   username: '',
+//   email: '',
+//   avatar: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
+// })
 const showEditDialog = ref(false)
 const editForm = ref({
   username: '',
   email: ''
 })
 
-onMounted(async () => {
+const name = ref('')
+const address = ref('')
+const tel = ref('')
+const regTime = ref()
+const avatar = ref('')
+const email = ref('')
+const role = ref('')
+const storeName = ref()
+const userName = ref('')
+
+function getUserInfo() {
+  userInfo().then(res => {
+    console.log(res);
+    name.value = res.data.result.name
+    tel.value = res.data.result.phone
+    storeName.value = res.data.result.storeId
+    address.value = res.data.result.address
+    regTime.value = parseTime(res.data.result.createTime)
+    avatar.value = res.data.result.avatar || 'https://nju-seek2025.oss-cn-shanghai.aliyuncs.com/InitAvatar.jpg'
+    email.value = res.data.result.email
+    role.value = res.data.result.role
+    userName.value = res.data.result.username
+  })
+}
+getUserInfo()
+
+onMounted( () => {
   // 检查登录状态
   const token = localStorage.getItem('token')
+  const username = localStorage.getItem('username')
   if (!token) {
     router.push('/auth/login')
-    return
-  }
-
-  try {
-    // 调用 userInfo 函数获取用户信息
-    const response = await fetchUserInfo()  // 使用重命名后的函数
-    const userData = response.data.result
-    
-    // 更新用户信息
-    userInfo.value = {
-      username: userData.name || '未设置用户名',
-      email: userData.email || '未设置邮箱',
-      avatar: userData.avatar || 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg'
-    }
-  } catch (error) {
-    console.error('获取用户信息失败:', error)
   }
 })
 
@@ -65,13 +77,29 @@ const handleSave = () => {
 <template>
   <div class="profile-container">
     <div class="profile-header">
-      <img :src="userInfo.avatar" alt="用户头像" class="avatar">
-      <h2>{{ userInfo.username }}</h2>
+      <img :src="avatar" alt="用户头像" class="avatar">
+      <h2>{{ name }}</h2>
     </div>
     <div class="profile-info">
       <div class="info-item">
+        <label>电话号码：</label>
+        <span>{{ tel }}</span>
+      </div>
+      <div class="info-item">
+        <label>身份：</label>
+        <span>{{ role }}</span>
+      </div>
+      <div class="info-item">
+        <label>收货地址：</label>
+        <span>{{ address }}</span>
+      </div>
+      <div class="info-item">
         <label>邮箱：</label>
-        <span>{{ userInfo.email }}</span>
+        <span>{{ email }}</span>
+      </div>
+      <div class="info-item">
+        <label>注册时间：</label>
+        <span>{{ regTime }}</span>
       </div>
       <div class="actions">
         <button class="edit-btn" @click="openEditDialog">编辑资料</button>
