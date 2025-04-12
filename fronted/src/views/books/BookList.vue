@@ -26,7 +26,7 @@ onMounted(async () => {
       id: 1,
       title: '深入理解计算机系统',
       price: 89.00,
-      cover: '/images/book1.jpg',
+      cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',
       store: {
         name: '优质图书店'
       }
@@ -35,7 +35,7 @@ onMounted(async () => {
       id: 2,
       title: '算法导论',
       price: 78.00,
-      cover: '/images/book2.jpg',
+      cover: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',
       store: {
         name: '计算机书店'
       }

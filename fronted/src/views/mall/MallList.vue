@@ -1,6 +1,26 @@
 <template>
   <div class="mall-list">
     <h1>图书商城</h1>
+    
+    <!-- 商家的店铺展示 -->
+    <div v-if="userRole !== 'customer'" class="my-store-section">
+      <div class="store-card my-store">
+        <div class="store-header">
+          <div class="store-info">
+            <img :src="myStore.logo" :alt="myStore.name" class="store-logo">
+            <div class="store-text">
+              <h2>我的商店：{{ myStore.name }}</h2>
+              <p>{{ myStore.description }}</p>
+            </div>
+          </div>
+          <button class="store-detail-btn" @click="router.push(`/mall/store/${myStore.id}`)">
+            管理店铺
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 现有的商店列表 -->
     <div class="store-list">
       <div v-for="store in stores" :key="store.id" class="store-card">
         <div class="store-header">
@@ -35,9 +55,33 @@ import BookCard from '../../components/BookCard.vue'
 
 const router = useRouter()
 const stores = ref([])
+const userRole = ref('customer') // 用户角色
+const myStore = ref(null)
 
 onMounted(async () => {
-  // TODO: 从后端获取商城数据
+  // 获取用户角色
+  // const token = localStorage.getItem('token')
+  // if (token) {
+  //   try {
+  //     // TODO: 从token中解析用户角色或调用后端API获取用户信息
+      userRole.value = 'seller' // 模拟数据，实际应该从后端获取
+
+      // 如果是商家，获取其店铺信息
+      if (userRole.value !== 'customer') {
+        // TODO: 调用后端API获取商家的店铺信息
+        myStore.value = {
+          id: 999,
+          name: '我的书店',
+          description: '我的专属书店',
+          logo: 'https://srtanger-bucket-0.oss-cn-shanghai.aliyuncs.com/%E5%A4%B4%E5%83%8F0.jpg',
+        }
+      }
+    // } catch (error) {
+    //   console.error('获取用户信息失败:', error)
+    // }
+  // }
+
+  // 获取所有商店列表
   stores.value = [
     {
       id: 1,
@@ -149,5 +193,22 @@ onMounted(async () => {
 .store-text {
   display: flex;
   flex-direction: column;
+}
+
+.my-store-section {
+  margin-bottom: 40px;
+}
+
+.my-store {
+  border: 2px solid rgba(139, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.my-store .store-detail-btn {
+  background: #8B0000;
+}
+
+.my-store:hover {
+  border-color: rgba(139, 0, 0, 0.5);
 }
 </style>

@@ -5,7 +5,10 @@
       <h3 class="book-title">{{ book.title }}</h3>
       <p class="book-price">￥{{ book.price }}</p>
       <p class="book-store" v-if="book.store">{{ book.store.name }}</p>
-      <button class="detail-button" @click="goToDetail">查看详情</button>
+      <div class="button-group">
+        <button class="detail-button" @click="goToDetail">查看详情</button>
+        <button v-if="editMode" class="delete-button" @click="$emit('delete', book.id)">删除</button>
+      </div>
     </div>
   </div>
 </template>
@@ -21,8 +24,14 @@ const props = defineProps({
   fromMall: {
     type: Boolean,
     default: false
+  },
+  editMode: {
+    type: Boolean,
+    default: false
   }
 })
+
+defineEmits(['delete'])
 
 const router = useRouter()
 
@@ -74,8 +83,13 @@ const goToDetail = () => {
   margin: 8px 0;
 }
 
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
 .detail-button {
-  width: 100%;
+  flex: 2;
   padding: 8px;
   background: #409eff;
   color: white;
@@ -85,7 +99,18 @@ const goToDetail = () => {
   transition: opacity 0.2s;
 }
 
-.detail-button:hover {
+.delete-button {
+  flex: 1;
+  padding: 8px;
+  background: #8B0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.delete-button:hover {
   opacity: 0.8;
 }
 </style>

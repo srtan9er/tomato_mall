@@ -6,7 +6,12 @@
           <img :src="book.cover" :alt="book.title" />
         </div>
         <div class="book-info">
-          <h1>{{ book.title }}</h1>
+          <div class="title-section">
+            <h1>{{ book.title }}</h1>
+            <button v-if="isBookOwner" class="edit-btn" @click="showEditForm = true">
+              编辑图书
+            </button>
+          </div>
           <p class="price">¥{{ book.price }}</p>
           <p class="description">{{ book.description }}</p>
           <div class="store-info" @click="goToStore">
@@ -21,6 +26,33 @@
         </div>
       </div>
     </div>
+
+    <!-- 编辑图书弹窗 -->
+    <div v-if="showEditForm" class="edit-dialog">
+      <div class="dialog-content">
+        <h3>编辑图书信息</h3>
+        <div class="form-group">
+          <label>书名</label>
+          <input v-model="editForm.title" type="text">
+        </div>
+        <div class="form-group">
+          <label>价格</label>
+          <input v-model="editForm.price" type="number" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>描述</label>
+          <textarea v-model="editForm.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>封面图片URL</label>
+          <input v-model="editForm.cover" type="text">
+        </div>
+        <div class="dialog-actions">
+          <button class="cancel-btn" @click="showEditForm = false">取消</button>
+          <button class="save-btn" @click="saveBookInfo">保存</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -32,9 +64,19 @@ const route = useRoute()
 const router = useRouter()
 const book = ref(null)
 
+const isBookOwner = ref(false)
+const showEditForm = ref(false)
+const editForm = ref({
+  title: '',
+  price: 0,
+  description: '',
+  cover: ''
+})
+
 onMounted(async () => {
   // TODO: 从后端获取图书详情
   // 模拟数据
+  
   book.value = {
     id: route.params.id,
     title: '深入理解计算机系统',
@@ -46,6 +88,28 @@ onMounted(async () => {
       name: '优质图书店'
     }
   }
+  
+// 检查是否为图书所有者
+  // const token = localStorage.getItem('token')
+  // if (token) {
+  //   try {
+      // TODO: 调用后端API检查用户身份和店铺所有权
+      // 模拟数据
+      const userStoreId = 1 // 假设当前用户的店铺ID
+      isBookOwner.value = userStoreId === book.value?.store?.id
+
+      if (isBookOwner.value) {
+        editForm.value = {
+          title: book.value.title,
+          price: book.value.price,
+          description: book.value.description,
+          cover: book.value.cover
+        }
+      }
+  //   } catch (error) {
+  //     console.error('验证图书所有权失败:', error)
+  //   }
+  // }
 })
 
 const addToCart = () => {
@@ -59,6 +123,21 @@ const buyNow = () => {
 const goToStore = () => {
   if (book.value?.store?.id) {
     router.push(`/mall/store/${book.value.store.id}`)
+  }
+}
+
+
+// 保存图书信息
+const saveBookInfo = async () => {
+  try {
+    // TODO: 调用后端API保存图书信息
+    book.value = {
+      ...book.value,
+      ...editForm.value
+    }
+    showEditForm.value = false
+  } catch (error) {
+    console.error('保存图书信息失败:', error)
   }
 }
 </script>
@@ -169,5 +248,81 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.edit-btn {
+  padding: 8px 16px;
+  background: #8B0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.cancel-btn, .save-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.cancel-btn {
+  background: #ddd;
+}
+
+.save-btn {
+  background: #8B0000;
+  color: white;
 }
 </style>
