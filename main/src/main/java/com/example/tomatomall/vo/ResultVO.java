@@ -23,6 +23,11 @@ public class ResultVO<T> implements Serializable {
         return new ResultVO<T>("000", null, result);
     }
 
+    // 添加无参数的方法
+    public static <T> ResultVO<T> buildSuccess() {
+        return new ResultVO<T>("000", null, null);
+    }
+
     public static <T> ResultVO<T> buildFailure(String msg) {
         return new ResultVO<T>("400", msg, null);
     }

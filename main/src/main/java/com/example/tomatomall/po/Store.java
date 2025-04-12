@@ -11,19 +11,19 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-
 public class Store {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Basic
     @Column(name = "name")
     private String name;
 
-    @Basic
     @Column(name = "logo")
     private String logoUrl;
+
+    @Column(name = "owner_id")  // 添加店铺所有者ID字段
+    private Integer ownerId;
 
     public StoreVO toVO(){
         StoreVO storeVO = new StoreVO();
